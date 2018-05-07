@@ -3,7 +3,12 @@
     "description": "HTTP REST client, simplified for PHP",
     "type": "library",
     "homepage": "http://github.com/sendgrid/php-http-client",
-    "keywords": ["Mobtexting", "HTTP", "REST", "API"],
+    "keywords": [
+        "Mobtexting",
+        "HTTP",
+        "REST",
+        "API"
+    ],
     "license": "MIT",
     "authors": [
         {
@@ -27,5 +32,6 @@
         "psr-4": {
             "Mobtexting\\Test\\": "test/unit/"
         }
-    }
+    },
+    "minimum-stability": "dev"
 }

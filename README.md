@@ -13,6 +13,18 @@ composer require mobtexting/php-http-client
 ```php
     $headers = ['Authorization: Bearer ' . $apiKey];
     $client = new Mobtexting\Client('https://api.example.com', $headers);
+
+    $data = [
+        'some' => 1, 'awesome' => 2, 'data' => 3
+    ];
+
+    $response = $client->post($data, $queryParams, $requestHeaders);
+
+    var_dump(
+        $response->statusCode(),
+        $response->headers(),
+        $response->body()
+    );
 ```
 
 ## Security
