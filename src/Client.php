@@ -1,6 +1,6 @@
 <?php
 
-namespace Mobtexting;
+namespace Mobtexting\Http;
 
 /**
  *
@@ -78,6 +78,11 @@ class Client
     }
 
     public function request($url, $headers, $curlOptions = null)
+    {
+        return new self($url, $headers, $curlOptions);
+    }
+
+    public static function instance($url, $headers, $curlOptions = null)
     {
         return new self($url, $headers, $curlOptions);
     }

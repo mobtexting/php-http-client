@@ -1,4 +1,4 @@
-# Mobtexting Http Client
+# MOBtexting Http Client
 
 ## Installation
 

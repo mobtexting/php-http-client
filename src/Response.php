@@ -1,5 +1,5 @@
 <?php
-namespace Mobtexting;
+namespace Mobtexting\Http;
 
 /**
  * Holds the response from an API call.
