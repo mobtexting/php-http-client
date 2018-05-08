@@ -1,6 +1,6 @@
 # The MIT License (MIT)
 
-Copyright (c) Gregorio Hernández Caso <gregoriohc@gmail.com>
+Copyright (c) Sankar Suda <sankar.suda@gmail.com>
 
 > Permission is hereby granted, free of charge, to any person obtaining a copy
 > of this software and associated documentation files (the "Software"), to deal
