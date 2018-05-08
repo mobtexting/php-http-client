@@ -12,7 +12,6 @@ namespace Mobtexting\Http;
  * @method Response put($body = null, $query = null, $headers = null)
  * @method Response delete($body = null, $query = null, $headers = null)
  *
- * @method Client version($value)
  * @method Client|Response send()
  *
  *
@@ -29,14 +28,11 @@ class Client
      * @var array
      */
     protected $headers;
-    /**
-     * @var string
-     */
-    protected $version;
+
     /**
      * @var array
      */
-    protected $path;
+    protected $path = [];
     /**
      * @var array
      */
@@ -172,10 +168,11 @@ class Client
      */
     protected function buildUrl($queryParams = null)
     {
-        $path = '/' . implode('/', $this->path);
+        $path = '/' . (is_array($this->path) ? implode('/', $this->path) : '');
         if (isset($queryParams)) {
             $path .= '?' . http_build_query($queryParams);
         }
+
         return sprintf('%s%s', $this->host, $path);
     }
     /**
@@ -197,16 +194,21 @@ class Client
             CURLOPT_SSL_VERIFYPEER => false,
             CURLOPT_FAILONERROR => false,
         ] + $this->curlOptions;
+
         if (isset($headers)) {
             $headers = array_merge($this->headers, $headers);
         } else {
             $headers = $this->headers;
         }
-        if (isset($body)) {
+
+        if (isset($body) && is_array($body)) {
             $encodedBody = json_encode($body);
             $options[CURLOPT_POSTFIELDS] = $encodedBody;
             $headers = array_merge($headers, ['Content-Type: application/json']);
+        } else if (isset($body)) {
+            $options[CURLOPT_POSTFIELDS] = $body;
         }
+
         $options[CURLOPT_HTTPHEADER] = $headers;
 
         return $options;
@@ -291,6 +293,7 @@ class Client
     {
         $channel = curl_init($url);
         $options = $this->createCurlOptions($method, $body, $headers);
+
         curl_setopt_array($channel, $options);
         $content = curl_exec($channel);
         $response = $this->parseResponse($channel, $content);
@@ -370,6 +373,7 @@ class Client
 
         return $client;
     }
+
     /**
      * Dynamically add method calls to the url, then call a method.
      * (e.g. client.name.name.method())
@@ -390,9 +394,15 @@ class Client
         if (in_array($name, $this->methods, true)) {
             $body = isset($args[0]) ? $args[0] : null;
             $queryParams = isset($args[1]) ? $args[1] : null;
-            $url = $this->buildUrl($queryParams);
             $headers = isset($args[2]) ? $args[2] : null;
             $retryOnLimit = isset($args[3]) ? $args[3] : $this->retryOnLimit;
+
+            if ($body && strtolower($name) == 'post') {
+                $body = http_build_query($body);
+            }
+
+            $url = $this->buildUrl($queryParams);
+
             if ($this->isConcurrentRequest) {
                 // save request to be sent later
                 $requestData = ['method' => $name, 'url' => $url, 'body' => $body, 'headers' => $headers];

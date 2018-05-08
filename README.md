@@ -11,11 +11,21 @@ composer require mobtexting/php-http-client
 ## Usage
 
 ```php
-    $headers = ['Authorization: Bearer ' . $apiKey];
+    $token = 'xxxx';
+    
+    $headers = ['Authorization: Bearer ' . $token];
     $client = new Mobtexting\Client('https://api.example.com', $headers);
 
     $data = [
         'some' => 1, 'awesome' => 2, 'data' => 3
+    ];
+
+    $queryParams = [
+        'hello' => 0, 'world' => 1
+    ];
+
+    $requestHeaders = [
+        'X-Test' => 'test'
     ];
 
     $response = $client->post($data, $queryParams, $requestHeaders);
